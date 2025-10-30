@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가상 쇼핑몰 - 심리 실험</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Welcome to Our Store</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Products</a>
+            <a href="#">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Featured Products</h2>
+        <div class="product-grid">
+            <div class="product-item">상품 1</div>
+            <div class="product-item">상품 2</div>
+            <div class="product-item">상품 3</div>
+            <div class="product-item">상품 4</div>
+        </div>
+    </main>
+
+    <div id="popup-auto" class="popup-overlay" style="display: none;">
+        <div class="popup-content">
+            <h3>방문 환영! 자동 당첨 이벤트!</h3>
+            <p>고객님을 위한 룰렛이 자동으로 돌아갑니다...</p>
+            <div class="roulette-container">
+                <div class="wheel" id="wheel-auto"></div>
+                <div class="pointer">▼</div>
+            </div>
+            <h4 id="result-auto" class="result-text" style="display: none;"></h4>
+            <button class="close-btn" id="close-auto">닫기</button>
+        </div>
+    </div>
+
+    <div id="popup-click" class="popup-overlay" style="display: none;">
+        <div class="popup-content">
+            <h3>100% 당첨 확정! 행운의 룰렛</h3>
+            <p>버튼을 눌러 행운을 확인하세요!</p>
+            <div class="roulette-container">
+                <div class="wheel" id="wheel-click"></div>
+                <div class="pointer">▼</div>
+            </div>
+            <button id="spin-button">SPIN!</button>
+            <h4 id="result-click" class="result-text" style="display: none;"></h4>
+            <button class="close-btn" id="close-click" style="display: none;">닫기</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
