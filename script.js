@@ -1,23 +1,42 @@
-// DOM 요소가 모두 로드되면 스크립트 실행
 document.addEventListener('DOMContentLoaded', () => {
 
     // 1. 실험 조건(A/B) 분기 로직
     const urlParams = new URLSearchParams(window.location.search);
-    const condition = urlParams.get('condition'); // URL에서 'condition' 값을 가져옴
+    const condition = urlParams.get('condition'); 
 
-    // 팝업이 3초 후에 뜨도록 설정
     setTimeout(() => {
         if (condition === 'auto') {
             showAutoPopup();
         } else if (condition === 'click') {
             showClickPopup();
         }
-        // condition 값이 없거나 다르면 아무 팝업도 띄우지 않음.
     }, 3000); // 3초 딜레이
 
+    
+    // 2. 팝업 1: 자동 당첨 룰렛 로직 (3회 연속 당첨)
+    
+    // 스핀과 결과 표시를 위한 헬퍼 함수 (Promise 기반)
+    function runSpin(wheel, resultText, rotation, message) {
+        return new Promise(resolve => {
+            // 룰렛 회전
+            wheel.style.transform = `rotate(${rotation}deg)`;
+            
+            // 4초 (애니메이션 시간) 후에 결과 표시
+            setTimeout(() => {
+                resultText.innerHTML = message; // innerHTML을 사용해 <br> 태그 허용
+                resultText.style.display = 'block';
+                resolve(); // 스핀 완료
+            }, 4100); // CSS transition 시간(4초) + 0.1초 딜레이
+        });
+    }
 
-    // 2. 팝업 1: 자동 당첨 룰렛 로직
-    function showAutoPopup() {
+    // 1.5초간 대기하는 헬퍼 함수
+    function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // async/await를 사용하여 3회 스핀을 순차적으로 실행
+    async function showAutoPopup() {
         const popup = document.getElementById('popup-auto');
         const wheel = document.getElementById('wheel-auto');
         const resultText = document.getElementById('result-auto');
@@ -25,15 +44,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         popup.style.display = 'flex'; // 팝업 보이기
         
-        // "4게임" 요청을 4초간의 애니메이션으로 구현 (CSS의 @keyframes 사용)
-        wheel.classList.add('spinning-auto');
+        let currentRotation = 0; // 누적 회전 각도
 
-        // 4초 (애니메이션 시간) 후에 결과 표시
-        setTimeout(() => {
-            resultText.textContent = '축하합니다! 15% 할인 쿠폰 당첨!';
-            resultText.style.display = 'block';
-            closeBtn.style.display = 'inline-block'; // 닫기 버튼 보이기
-        }, 4100); // 애니메이션 시간(4초) + 0.1초 딜레이
+        // --- 스핀 1 ---
+        currentRotation += (1800 + 45); // 5바퀴 + 1번째 당첨 위치 (5% 쿠폰)
+        await runSpin(wheel, resultText, currentRotation, "첫 번째 당첨!<br>(5% 할인 쿠폰)");
+        await wait(1500); // 1.5초 대기
+        resultText.style.display = 'none'; // 다음 스핀을 위해 메시지 숨김
+
+        // --- 스핀 2 ---
+        currentRotation += (1800 + 135); // 5바퀴 + 2번째 당첨 위치 (10% 쿠폰)
+        await runSpin(wheel, resultText, currentRotation, "두 번째 당첨!<br>(10% 할인 쿠폰)");
+        await wait(1500); // 1.5초 대기
+        resultText.style.display = 'none';
+
+        // --- 스핀 3 ---
+        currentRotation += (1800 + 315); // 5바퀴 + 3번째 당첨 위치 (15% 쿠폰)
+        await runSpin(wheel, resultText, currentRotation, "세 번째 당첨!<br>(15% 할인 쿠폰)");
+        await wait(1000); // 1초 대기
+
+        // --- 최종 결과 ---
+        resultText.innerHTML = "축하합니다! 3연속 당첨!<br>(모든 쿠폰이 지급되었습니다)";
+        resultText.style.display = 'block';
+        closeBtn.style.display = 'inline-block'; // 닫기 버튼 보이기
 
         // 닫기 버튼
         closeBtn.addEventListener('click', () => {
@@ -41,7 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. 팝업 2: 클릭형 확정 룰렛 로직
+
+    // 3. 팝업 2: 클릭형 확정 룰렛 로직 (변경 없음)
     function showClickPopup() {
         const popup = document.getElementById('popup-click');
         const wheel = document.getElementById('wheel-click');
@@ -51,23 +85,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         popup.style.display = 'flex'; // 팝업 보이기
 
-        // 스핀 버튼 클릭 이벤트
         spinBtn.addEventListener('click', () => {
-            spinBtn.disabled = true; // 버튼 비활성화 (중복 클릭 방지)
+            spinBtn.disabled = true; 
 
-            // 룰렛 돌리기 (JS로 각도 제어)
-            // 최소 5바퀴(1800deg) + 랜덤 각도
-            // 실험 결과가 동일해야 하므로 '15% 쿠폰' 위치로 고정 (예: 315도)
-            const randomDegrees = 1800 + 315; 
+            // 실험 결과 통일을 위해 '15% 쿠폰' 위치로 고정 (예: 315도)
+            const targetRotation = 1800 + 315; 
             
-            wheel.style.transform = `rotate(${randomDegrees}deg)`;
+            wheel.style.transform = `rotate(${targetRotation}deg)`;
 
             // 4초 (CSS transition 시간) 후에 결과 표시
             setTimeout(() => {
                 resultText.textContent = '축하합니다! 15% 할인 쿠폰 당첨!';
                 resultText.style.display = 'block';
-                closeBtn.style.display = 'inline-block'; // 닫기 버튼 보이기
-            }, 4100); // CSS transition 시간(4초) + 0.1초 딜레이
+                closeBtn.style.display = 'inline-block'; 
+            }, 4100); 
         });
 
         // 닫기 버튼

@@ -20,10 +20,39 @@
     <main>
         <h2>Featured Products</h2>
         <div class="product-grid">
-            <div class="product-item">상품 1</div>
-            <div class="product-item">상품 2</div>
-            <div class="product-item">상품 3</div>
-            <div class="product-item">상품 4</div>
+            
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/product1/300/200" alt="상품 이미지 1">
+                <div class="product-info">
+                    <h3 class="product-name">프리미엄 코튼 티셔츠</h3>
+                    <p class="product-price">₩29,900</p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/product2/300/200" alt="상품 이미지 2">
+                <div class="product-info">
+                    <h3 class="product-name">클래식 블루 데님</h3>
+                    <p class="product-price">₩75,000</p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/product3/300/200" alt="상품 이미지 3">
+                <div class="product-info">
+                    <h3 class="product-name">어반 스타일 스니커즈</h3>
+                    <p class="product-price">₩120,000</p>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/product4/300/200" alt="상품 이미지 4">
+                <div class="product-info">
+                    <h3 class="product-name">레더 스트랩 시계</h3>
+                    <p class="product-price">₩210,000</p>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -32,11 +61,13 @@
             <h3>방문 환영! 자동 당첨 이벤트!</h3>
             <p>고객님을 위한 룰렛이 자동으로 돌아갑니다...</p>
             <div class="roulette-container">
-                <div class="wheel" id="wheel-auto"></div>
+                <div class="wheel" id="wheel-auto">
+                    <div class="wheel-center-pin"></div>
+                </div>
                 <div class="pointer">▼</div>
             </div>
             <h4 id="result-auto" class="result-text" style="display: none;"></h4>
-            <button class="close-btn" id="close-auto">닫기</button>
+            <button class="close-btn" id="close-auto" style="display: none;">닫기</button>
         </div>
     </div>
 
@@ -45,7 +76,9 @@
             <h3>100% 당첨 확정! 행운의 룰렛</h3>
             <p>버튼을 눌러 행운을 확인하세요!</p>
             <div class="roulette-container">
-                <div class="wheel" id="wheel-click"></div>
+                <div class="wheel" id="wheel-click">
+                    <div class="wheel-center-pin"></div>
+                </div>
                 <div class="pointer">▼</div>
             </div>
             <button id="spin-button">SPIN!</button>
