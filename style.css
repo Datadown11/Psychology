@@ -16,7 +16,8 @@ header {
 
 header h1 {
     margin: 0;
-    font-size: 1.8rem;
+    font-size: 2.2rem; /* 로고 이름 크기 */
+    font-weight: 800;
 }
 
 header nav {
@@ -33,7 +34,7 @@ header nav a {
 
 main {
     padding: 2rem;
-    max-width: 1200px;
+    max-width: 1400px; /* 5열 배치를 위해 너비 증가 */
     margin: auto;
 }
 
@@ -47,7 +48,8 @@ main h2 {
 /* 상품 카드 스타일 */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /* 15개 상품을 위해 230px 최소너비, 5열 배치 */
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 1.5rem;
 }
 
@@ -67,24 +69,29 @@ main h2 {
 
 .product-card img {
     width: 100%;
-    height: 200px;
+    height: 180px; /* 높이 살짝 조절 */
     object-fit: cover;
     display: block;
+    background-color: #eee; /* 이미지 로딩 전 배경색 */
 }
 
 .product-info {
-    padding: 1.2rem;
+    padding: 1rem; /* 패딩 살짝 조절 */
 }
 
 .product-name {
-    font-size: 1.1rem;
+    font-size: 1.05rem; /* 폰트 크기 조절 */
     font-weight: 600;
     color: #333;
     margin: 0 0 0.5rem 0;
+    /* 텍스트가 길어지면 ... 처리 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product-price {
-    font-size: 1.2rem;
+    font-size: 1.15rem; /* 폰트 크기 조절 */
     font-weight: 700;
     color: #d9534f;
     margin: 0;
@@ -98,7 +105,7 @@ main h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7); /* 배경 어둡게 */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,11 +145,11 @@ main h2 {
     font-weight: 500;
 }
 
-/* 룰렛 스타일 (업그레이드) */
+/* 룰렛 스타일 (정교하게 수정) */
 .roulette-container {
     position: relative;
-    width: 250px;
-    height: 250px;
+    width: 300px; /* 룰렛 크기 증가 */
+    height: 300px;
     margin: 2rem auto;
     display: flex;
     justify-content: center;
@@ -151,11 +158,10 @@ main h2 {
 
 .pointer {
     position: absolute;
-    top: -15px; /* 포인터가 원판 위에 위치 */
-    font-size: 2.5rem;
+    top: -18px; /* 포인터가 원판 위에 위치 */
+    font-size: 3rem; /* 포인터 크기 증가 */
     color: #d9534f;
     z-index: 10;
-    /* 포인터에 그림자 추가 */
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
@@ -163,32 +169,47 @@ main h2 {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 5px solid #666;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2), inset 0 0 10px rgba(0,0,0,0.1);
-    /* 8조각의 다채로운 색상 */
-    background: conic-gradient(
-        #f8b195 0deg 45deg,
-        #f67280 45deg 90deg,
-        #c06c84 90deg 135deg,
-        #6c5b7b 135deg 180deg,
-        #f8b195 180deg 225deg,
-        #f67280 225deg 270deg,
-        #c06c84 270deg 315deg,
-        #6c5b7b 315deg 360deg
-    );
-    /* 자동 스핀용 keyframes 삭제 -> JS로 제어 */
-    transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    border: 8px solid #666; /* 테두리 두껍게 */
+    box-shadow: 0 0 20px rgba(0,0,0,0.2), inset 0 0 10px rgba(0,0,0,0.3);
     position: relative;
+    overflow: hidden; /* 조각들이 밖으로 나가지 않도록 */
+    /* 스핀 시간 3초로 수정 */
+    transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* 룰렛 조각 (Slice) */
+.slice {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* clip-path로 부채꼴 모양 생성 */
+    clip-path: polygon(50% 50%, 100% 50%, 100% 0, 50% 0);
+    /* CSS 변수로 색상과 순서 제어 */
+    background-color: var(--c);
+    transform: rotate(calc(45deg * (var(--i) - 1))); /* 45도 * (조각순서 - 1) */
+    transform-origin: 50% 50%;
+}
+
+/* 룰렛 텍스트 */
+.slice-text {
+    position: absolute;
+    top: 20%; /* 원판 중심에서 텍스트 위치 (20% -> 바깥쪽) */
+    left: 55%; /* 원판 중심에서 텍스트 위치 (50% -> 살짝 오른쪽) */
+    transform: rotate(22.5deg); /* 조각의 절반 각도만큼 회전 */
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 /* 룰렛 중앙 핀 */
 .wheel-center-pin {
     position: absolute;
-    width: 30px;
-    height: 30px;
+    width: 40px; /* 크기 증가 */
+    height: 40px;
     border-radius: 50%;
     background: #f1f1f1;
-    border: 4px solid #888;
+    border: 5px solid #888;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -202,7 +223,8 @@ main h2 {
     color: #d9534f;
     font-size: 1.3rem;
     font-weight: bold;
-    min-height: 40px; /* 3줄 연속 당첨 메시지를 위해 높이 확보 */
+    min-height: 40px; 
+    line-height: 1.4; /* 줄바꿈 시 간격 */
 }
 
 #spin-button {
