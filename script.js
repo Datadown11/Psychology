@@ -95,4 +95,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // 3. 팝
+    // 3. 팝업 2: 클릭형 확정 룰렛 로직
+    function showClickPopup() {
+        const popup = document.getElementById('popup-click');
+        const wheel = document.getElementById('wheel-click');
+        const spinBtn = document.getElementById('spin-button');
+        const resultText = document.getElementById('result-click');
+        const closeBtn = document.getElementById('close-click');
+
+        popup.style.display = 'flex'; // 팝업 보이기
+
+        spinBtn.addEventListener('click', () => {
+            spinBtn.disabled = true; 
+
+            // 실험 결과 통일을 위해 '15% 쿠폰' 위치로 고정 (4바퀴 + 15% 위치)
+            const targetRotation = 1440 + prizeLocations["15%"];
+            
+            wheel.style.transform = `rotate(${targetRotation}deg)`;
+
+            // 3초 (CSS transition 시간) 후에 결과 표시
+            setTimeout(() => {
+                resultText.textContent = '축하합니다! 15% 할인 쿠폰 당첨!';
+                resultText.style.display = 'block';
+                closeBtn.style.display = 'inline-block'; 
+            }, 3100); 
+        });
+
+        // 닫기 버튼
+        closeBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+    }
+});
