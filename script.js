@@ -59,14 +59,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         popup.style.display = 'flex'; // 1. 팝업 보이기
         
-        // --- ★★★ 수정된 부분 ★★★ ---
         // 팝업이 뜬 직후(display: flex) 브라우저가 룰렛의 
         // 초기 상태를 인식할 수 있도록 아주 짧은(50ms) 딜레이를 줍니다.
-        // 이 딜레이가 없으면 첫 번째 스핀 애니메이션이 생략될 수 있습니다.
+        // (이것이 첫 스핀이 안 되던 버그를 수정한 핵심입니다)
         await wait(50);
-        // --- ★★★ 수정 완료 ★★★ ---
 
         const baseSpin = 1440; // 4바퀴(1440도)를 기본으로 설정
 
         // --- 스핀 1 (5% 쿠폰) ---
-        let rotation1 = baseSpin + prizeLocations["5%
+        let rotation1 = baseSpin + prizeLocations["5%"];
+        await runSpin(wheel, resultText, rotation1, "첫 번째 당첨!<br>(5% 할인 쿠폰)");
+        await wait(1000); // 1초 대기
+        resultText.style.display = 'none'; // 다음 스핀을 위해 메시지 숨김
+
+        // --- 스핀 2 (10% 쿠폰) ---
+        let rotation2 = (baseSpin * 2) + prizeLocations["10%"];
+        await runSpin(wheel, resultText, rotation2, "두 번째 당첨!<br>(10% 할인 쿠폰)");
+        await wait(1000); // 1초 대기
+        resultText.style.display = 'none';
+
+        // --- 스핀 3 (15% 쿠폰) ---
+        let rotation3 = (baseSpin * 3) + prizeLocations["15%"];
+        await runSpin(wheel, resultText, rotation3, "세 번째 당첨!<br>(15% 할인 쿠폰)");
+        await wait(1000); // 1초 대기
+
+        // --- 최종 결과 ---
+        resultText.innerHTML = "축하합니다! 3연속 당첨!<br>(모든 쿠폰이 지급되었습니다)";
+        resultText.style.display = 'block';
+        closeBtn.style.display = 'inline-block'; // 닫기 버튼 보이기
+
+        // 닫기 버튼
+        closeBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+    }
+
+
+    // 3. 팝

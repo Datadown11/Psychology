@@ -234,20 +234,4 @@ main h2 {
     padding: 0.8rem 1.8rem;
     font-size: 1.2rem;
     border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-    font-weight: 600;
-}
-
-#spin-button:hover {
-    background-color: #025aa5;
-}
-
-#spin-button:active {
-    transform: scale(0.98);
-}
-
-#spin-button:disabled {
-    background-color: #999;
-    cursor: not-allowed;
-}
+    cursor: pointer
